@@ -13,8 +13,10 @@ RUN wget -nv https://github.com/shazow/ssh-chat/releases/download/v1.10/ssh-chat
 RUN mkdir -p /root/.ssh
 COPY ./confs/ssh-chat-key /root/.ssh/id_rsa
 
-COPY ./admins /root/
+COPY ./confs/admins /root/ 
 
+#watch -n 1 cat /root/chat_logs
+RUN touch /root/chat_logs
 EXPOSE 2022
 
-CMD ["/usr/local/bin/ssh-chat", "--admin=/root/admins"]
+CMD ["/usr/local/bin/ssh-chat", "--admin=/root/admins", "--log=/root/chat_logs"]

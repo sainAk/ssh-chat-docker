@@ -3,5 +3,7 @@ version: "3"
 services:
   chat:
     build: .
+    stdin_open: true
+    tty: true
     ports:
       - "2022:2022"

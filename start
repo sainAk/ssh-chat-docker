@@ -1,15 +1,36 @@
 #!/bin/bash
 
-echo "Gennerating SSH key..."
-yes n | ssh-keygen -t rsa -b 4096 -N '' -f ./confs/ssh-chat-key
+key_path="./confs/ssh-chat-key"
 
-touch admins
+err() {
+    if [ $? -ne 0 ]; then
+    exit 1
+    fi
+}
 
-docker-compose build
+build() {
+    #create an empty file if dosen't exist
+    touch ./confs/admins
+    if [[ ! -f "$key_path" ]]; then
+        echo "Gennerating SSH key..."
+        ssh-keygen -t rsa -b 4096 -N '' -f $key_path
+    fi
 
-docker-compose up -d
+    docker-compose build; err
 
-read -p "Enter your name [$USER]: " user_name
-user_name=${name:-$USER}
+    docker-compose up -d; err
+}
 
-ssh $user_name@localhost -p 2022
+connect() {
+    if [ -z "$user_name" ]; then
+    read -p "Enter your name [$USER]: " user_name
+    user_name=${name:-$USER}
+    fi
+
+    clear
+    ssh $user_name@localhost -p 2022
+}
+
+
+build
+connect

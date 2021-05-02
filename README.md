@@ -13,7 +13,7 @@ Docker version of the [ssh-chat](https://github.com/shazow/ssh-chat)
 $ ./start
 ```
 
-#### For admin privileges paste the public ssh key in ./admins
+#### For admin privileges paste the public ssh key in ./confs/admins
 
 ```shell
 cat ~/.ssh/id_rsa.pub >> admins && ./start
